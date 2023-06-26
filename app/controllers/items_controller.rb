@@ -13,4 +13,16 @@ class ItemsController < ApplicationController
     render json: Item.find(params[:id])
   end
 
+  def create
+    user = User.find(params[:user_id])
+    user.items.create(item_params)
+    render json: user.items.last, except: [:created_at, :updated_at]
+  end
+
+  private
+
+  def item_params
+    params.permit(:name, :description, :price)
+  end
+
 end
